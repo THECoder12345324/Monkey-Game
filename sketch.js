@@ -15,6 +15,7 @@ var score = 0;
 var ground, ground2, backgroundi;
 var play, instructionbutton, menu, resetb;
 var survivalTime;
+var timer = 0;
 
 
 function preload(){ 
@@ -66,7 +67,9 @@ function setup() {
 function draw() {
   background("white");
   drawSprites();
-  
+  if (timer == 0) {
+    Camera(width / 2, height / 2, 1);     
+  }
   monkey.collide(ground2);
   monkey.velocityY += 0.8;
   if (gamestate === START) {
@@ -123,7 +126,8 @@ function draw() {
     spawnBananas();
     if (keyDown("space") && monkey.y > 279) {
         monkey.velocityY = -13;
-      
+        Camera(40, 200, 3);
+        timer = 70;
     }
     if (bananaGroup.isTouching(monkey)) {
       score += 1;
