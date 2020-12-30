@@ -17,9 +17,18 @@ var play, instructionbutton, menu, resetb;
 var survivalTime;
 var timer = 0;
 
+var beginningx;
+var beginningy;
+var beginningz;
+
+var beginningx2;
+var beginningy2;
+var beginningz2;
+
+var easing = 0.05;
 
 function preload(){ 
-  monkey_running =            loadAnimation("sprite_0.png","sprite_1.png","sprite_2.png","sprite_3.png","sprite_4.png","sprite_5.png","sprite_6.png","sprite_7.png","sprite_8.png")
+  monkey_running = loadAnimation("sprite_0.png","sprite_1.png","sprite_2.png","sprite_3.png","sprite_4.png","sprite_5.png","sprite_6.png","sprite_7.png","sprite_8.png")
   backgroundImg = loadImage("monkeybackground.png");
   bananaImage = loadImage("banana.png");
   obstacleImage = loadImage("obstacle.png");
@@ -61,14 +70,49 @@ function setup() {
   resetb.scale = 0.2;
   resetb.visible = false;
   
+  beginningx2 = monkey.x;
+  beginningy2 = monkey.y;
+  beginningz2 = 1;
 }
 
 
 function draw() {
   background("white");
   drawSprites();
-  if (timer == 0) {
-    Camera(width / 2, height / 2, 1);     
+  timer -= 1;
+  if (timer <= 0) {
+    let TargetX2 = width / 2;
+    let dx2 = TargetX2 - beginningx2;
+    beginningx2 += dx2 * easing;
+
+    let TargetY2 = height / 2;
+    let dy2 = TargetY2 - beginningy2;
+    beginningy2 += dy2 * easing;
+
+    let TargetZ2 = 1;
+    let dz2 = TargetZ2 - beginningz2;
+    beginningz2 += dz2 * easing;
+
+    camera.zoom = beginningz2;
+    camera.position.x = beginningx2;
+    camera.position.y = beginningy2;
+  }
+  else {
+    let TargetX = monkey.x;
+    let dx = TargetX - beginningx;
+    beginningx += dx * easing;
+
+    let TargetY = monkey.y;
+    let dy = TargetY - beginningy;
+    beginningy += dy * easing;
+
+    let TargetZ = 2;
+    let dz = TargetZ - beginningz;
+    beginningz += dz * easing;
+
+    camera.position.x = beginningx;
+    camera.position.y = beginningy;
+    camera.zoom = beginningz;
   }
   monkey.collide(ground2);
   monkey.velocityY += 0.8;
@@ -126,8 +170,15 @@ function draw() {
     spawnBananas();
     if (keyDown("space") && monkey.y > 279) {
         monkey.velocityY = -13;
-        Camera(40, 200, 3);
-        timer = 70;
+        beginningx = width / 2;
+        beginningy = height / 2;
+        beginningz = 1;
+
+        beginningx2 = monkey.x;
+        beginningy2 = monkey.y;
+        beginningz2 = 2;
+
+        timer = 40;
     }
     if (bananaGroup.isTouching(monkey)) {
       score += 1;
