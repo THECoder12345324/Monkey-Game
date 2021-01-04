@@ -212,7 +212,7 @@ function draw() {
 
 function spawnObstacles() {
   if (World.frameCount % 103 === 0) {
-    obstacle = createSprite(500, 280);
+    obstacle = createSprite(500 - random(-100, 0), 280);
     obstacle.addImage(obstacleImage);
     obstacle.velocityX = -7 - score / 3;
     obstacle.scale = random(0.1, 0.3);
